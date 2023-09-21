@@ -18,5 +18,10 @@ public class CatControls : MonoBehaviour
         {
             catBehaviour.GoToOwner();
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            catBehaviour.Bounce();
+        }
     }
 }

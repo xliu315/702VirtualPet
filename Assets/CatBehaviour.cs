@@ -4,6 +4,11 @@ using UnityEngine.AI;
 
 public class CatBehaviour : MonoBehaviour
 {
+
+    public enum CatState
+    {
+
+    }
     public Transform owner;
 
     bool wandering = true;
@@ -42,12 +47,26 @@ public class CatBehaviour : MonoBehaviour
    
 
     }
+
+    public void Bounce()
+    {
+        IEnumerator Anim()
+        {
+            wandering = false;
+            animator.SetTrigger("Bounce");
+            agent.isStopped = true;
+            yield return new WaitForSeconds(1f);
+            agent.isStopped = false;
+            wandering = true;
+        }
+        StartCoroutine(Anim());
+    }
     void Update()
     {
         Vector3 lookRotation = (transform.position - previousPosition).normalized;
         if(lookRotation.magnitude > 0.01f)
         {
-            transform.rotation = Quaternion.LookRotation(lookRotation);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookRotation), Time.deltaTime * 2f);
         }
 
         if (!wandering)
